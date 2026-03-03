@@ -4,6 +4,7 @@ import Quickshell.Hyprland
 
 Row {
     id: root
+    property string targetMonitorName: ""
     anchors {
         //left: parent.left
         //leftMargin: 15
@@ -14,7 +15,14 @@ Row {
 
 
     Repeater {
-        model: Hyprland.workspaces
+        model: {
+            if (!Hyprland.workspaces.values) return [];
+            
+            return Hyprland.workspaces.values
+                .filter(w => w.monitor.name === root.targetMonitorName)
+                .sort((a, b) => a.id - b.id); // Dodatkowo sortujemy od 1 do 10
+        }
+
 
         Rectangle {
             width: theme.height
@@ -22,8 +30,7 @@ Row {
             radius: theme.radius
 
         
-
-            color: (Hyprland.focusedWorkspace?.id === modelData.id) ? theme.foreground : theme.background
+            color: (Hyprland.focusedWorkspace?.id === modelData.id) ? theme.foreground : mouseArea.containsMouse ? theme.activeWorkspace : theme.background
             Text {
                 anchors.centerIn: parent // Wyśrodkuj tekst wewnątrz prostokąta
                 color: theme.text
@@ -36,6 +43,19 @@ Row {
                     easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
                 }
             }
+            MouseArea {
+                id: mouseArea // WAŻNE: Musimy dać id, żeby Rectangle go widział
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+
+                hoverEnabled: true 
+                
+                onClicked: {
+                    console.log("Kliknięto Workspace")
+                    Hyprland.dispatch("workspace " + modelData.name)
+                }
+            }
+            
         }
 
     }
