@@ -80,7 +80,7 @@ ShellRoot {
                 }
 
                 //Date
-                Date{
+                Clock{
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
