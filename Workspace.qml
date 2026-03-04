@@ -33,7 +33,7 @@ Row {
             color: (Hyprland.focusedWorkspace?.id === modelData.id) ? theme.foreground : mouseArea.containsMouse ? theme.activeWorkspace : theme.background
             Text {
                 anchors.centerIn: parent // Wyśrodkuj tekst wewnątrz prostokąta
-                color: theme.text
+                color: (Hyprland.focusedWorkspace?.id === modelData.id) ? theme.foregroundText : mouseArea.containsMouse ? theme.text : theme.text
                 text: modelData.name // Wyświetlamy nazwę, np. "1", "2"
             }
 

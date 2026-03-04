@@ -37,10 +37,11 @@ Rectangle {
 
         onClicked: {
             console.log("Kliknięto Power Menu ")
-            isExpanded = !isExpanded
+            //isExpanded = !isExpanded
+            menuPopup.visible = !menuPopup.visible
         }
-        onEntered: expandedTimer.stop()
-        onExited: expandedTimer.start()
+        //onEntered: expandedTimer.stop()
+        //onExited: expandedTimer.start()
     }
     Behavior on width {
         NumberAnimation{
@@ -61,5 +62,15 @@ Rectangle {
         color: theme.text
         anchors.centerIn: parent
         text: "󰣇"
+    }
+
+    PopupWindow{
+        id: menuPopup
+        anchor.window: root
+        anchor.rect.x: 100
+        anchor.rect.y: 100
+        implicitHeight: 500
+        implicitWidth: 500
+        color: theme.foreground
     }
 }
