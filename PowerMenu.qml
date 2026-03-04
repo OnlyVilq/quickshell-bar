@@ -26,7 +26,7 @@ Rectangle {
 
     property color basecolor: theme.background
     color: mouseArea.containsMouse ? theme.foreground : root.basecolor
-
+        
     MouseArea {
         id: mouseArea // WAŻNE: Musimy dać id, żeby Rectangle go widział
         anchors.fill: parent
@@ -37,8 +37,16 @@ Rectangle {
 
         onClicked: {
             console.log("Kliknięto Power Menu ")
-            //isExpanded = !isExpanded
-            menuPopup.visible = !menuPopup.visible
+            if (menuPopup.show) {
+                // Jeśli jest otwarte: chowamy środek i odpalamy timer, 
+                // żeby fizycznie zamknąć okno DOPIERO po zakończeniu animacji
+                menuPopup.show = false
+                popupTimer.start()
+            } else {
+                // Jeśli jest zamknięte: pokazujemy okno od razu i aktywujemy animację
+                menuPopup.visible = true
+                menuPopup.show = true
+            }
         }
         //onEntered: expandedTimer.stop()
         //onExited: expandedTimer.start()
@@ -48,8 +56,6 @@ Rectangle {
             duration: 200
             easing.type: Easing.OutQuad
         }
-
-
     }
     Behavior on color {
         ColorAnimation {
@@ -66,11 +72,52 @@ Rectangle {
 
     PopupWindow{
         id: menuPopup
-        anchor.window: root
-        anchor.rect.x: 100
-        anchor.rect.y: 100
+        visible: false
+        anchor.item: root
+        //anchor.edges: Edges.Top 
+        anchor.edges: Edges.Top
+        //anchor.rect.x: 100
+        //anchor.rect.y: 100
         implicitHeight: 500
         implicitWidth: 500
-        color: theme.foreground
+        color: "transparent"
+
+        property bool show: false
+
+        Timer {
+            id: popupTimer
+            interval: 200
+            running: false
+            repeat: false
+            onTriggered: (menuPopup.visible = false)
+        }
+
+        Rectangle{
+
+
+            //visible: menuPopup.visible ? true : false
+            height: menuPopup.show ? parent.height : 0
+            width: menuPopup.show ? parent.width : 0
+
+            anchors{
+                left: parent.left
+                bottom: parent.bottom
+            }
+            Behavior on width {
+                NumberAnimation{
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+            }
+            Behavior on height {
+                NumberAnimation{
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+            }
+
+            color: theme.background
+        }
+
     }
 }
