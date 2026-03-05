@@ -12,6 +12,8 @@ Rectangle {
     property color basecolor: theme.background
     color: mouseArea.containsMouse ? theme.foreground : root.basecolor
 
+    clip: true
+
 
     anchors {
         verticalCenter: parent.verticalCenter
@@ -19,16 +21,29 @@ Rectangle {
 
     Text{
         id: volume
-        color: theme.text
+        color: mouseArea.containsMouse ? theme.foregroundText : theme.text
         anchors.centerIn: parent
         //text: Math.round((Pipewire.defaultAudioSink?.audio.volume ?? 0) * 100) + "%"
         text: Pipewire.defaultAudioSink?.audio.muted? "" : "    " + Math.round((Pipewire.defaultAudioSink?.audio.volume ?? 0) * 100) + "%"
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 100 // czas w ms (0.2 sekundy)
+                easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
+            }
+        }
     }
 
     Behavior on color {
         ColorAnimation {
             duration: 100 // czas w ms (0.2 sekundy)
             easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
+        }
+    }
+    Behavior on width {
+        NumberAnimation{
+            duration: 200
+            easing.type: Easing.OutQuad
         }
     }
 

@@ -22,13 +22,19 @@ Rectangle {
 
     Text {
         id: network
-        color: theme.text
+        color: mouseArea.containsMouse ? theme.foregroundText : theme.text
         anchors.centerIn: parent
         //text: Networking.state == DeviceType.None 
         //text: Network.state
         readonly property WifiDevice connectedAdapter: Networking.devices.values.find(d => d.type === DeviceType.Wifi) ?? null
         text: connectedAdapter?.networks.values.find(n => n.connected)?.name ?? "󰖪"
 
+        Behavior on color {
+            ColorAnimation {
+                duration: 100 // czas w ms (0.2 sekundy)
+                easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
+        }
+    }
         
     }
 

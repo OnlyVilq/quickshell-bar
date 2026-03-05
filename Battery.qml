@@ -19,28 +19,41 @@ Rectangle {
         verticalCenter: parent.verticalCenter
     }
 
-    Rectangle{
-        color: theme.background
-        height: battery.implicitHeight+2
-        width: battery.implicitWidth+4
-        radius: theme.radius
-        anchors{
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
-        }
-    }
+    // Rectangle{
+    //     color: theme.background
+    //     height: battery.implicitHeight+2
+    //     width: battery.implicitWidth+4
+    //     radius: theme.radius
+    //     anchors{
+    //         verticalCenter: parent.verticalCenter
+    //         horizontalCenter: parent.horizontalCenter
+    //     }
+    // }
 
     Text {
         id: battery
-        color: theme.text
+        color: root.color == theme.background ? theme.text : theme.foregroundText
         anchors.centerIn: parent
         text: "󱃌 " + Math.round(UPower.displayDevice.percentage * 100) + "%"
+
+        Behavior on color {
+        ColorAnimation {
+            duration: 500
+            easing.type: Easing.OutQuad
+        }
+    }
     }
 
 
     Behavior on color {
         ColorAnimation {
             duration: 500
+            easing.type: Easing.OutQuad
+        }
+    }
+    Behavior on width {
+        NumberAnimation{
+            duration: 200
             easing.type: Easing.OutQuad
         }
     }
