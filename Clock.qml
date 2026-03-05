@@ -15,6 +15,7 @@ Rectangle {
     height: theme.height
     width: clockDisplay.implicitWidth + 12
     radius: theme.radius
+    clip: true
     
     anchors {
         //right: parent.right
@@ -24,8 +25,15 @@ Rectangle {
     Text {
         id: clockDisplay
         anchors.centerIn: parent 
-        color: theme.text
+        color: mouseArea.containsMouse ? theme.foregroundText : theme.text
         text: isExpanded ? Qt.formatDateTime(clock.date, "HH:mm:ss - dd.MM.yyyy") : Qt.formatDateTime(clock.date, "HH:mm")
+
+        Behavior on color {
+        ColorAnimation {
+            duration: 200 // czas w ms (0.2 sekundy)
+            easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
+        }
+    }
     }
 
 

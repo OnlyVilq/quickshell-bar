@@ -36,19 +36,25 @@ ShellRoot {
             visible: true 
 
             //Center
-            Text {
-            	color: theme.foreground
-            	anchors.centerIn: parent
-            	text: modelData.name
+            // Text {
+            // 	color: theme.foreground
+            // 	anchors.centerIn: parent
+            // 	text: modelData.name
+            // }
+            Row {
+                anchors.centerIn: parent
+                Island {
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
 
 
             //Left side
             Row {
-                spacing: theme.spacing
-                PowerMenu {
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                // spacing: theme.spacing
+                // PowerMenu {
+                //     anchors.verticalCenter: parent.verticalCenter
+                // }
                 Workspace {
                     anchors.verticalCenter: parent.verticalCenter
                     targetMonitorName: modelData.name
