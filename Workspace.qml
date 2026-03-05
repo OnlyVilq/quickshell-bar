@@ -35,6 +35,13 @@ Row {
                 anchors.centerIn: parent // Wyśrodkuj tekst wewnątrz prostokąta
                 color: (Hyprland.focusedWorkspace?.id === modelData.id) ? theme.foregroundText : mouseArea.containsMouse ? theme.text : theme.text
                 text: modelData.name // Wyświetlamy nazwę, np. "1", "2"
+
+                Behavior on color {
+                ColorAnimation {
+                    duration: 200 // czas w ms (0.2 sekundy)
+                    easing.type: Easing.OutQuad // Rodzaj ruchu (możesz usunąć, jeśli wolisz liniowy)
+                }
+            }
             }
 
             Behavior on color {

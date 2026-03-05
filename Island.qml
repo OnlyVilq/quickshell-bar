@@ -10,8 +10,21 @@ Rectangle{
     radius: theme.radius
     clip: true
 
+    //root.currentPlayer.identity == 'tidal-hifi'
 
-    property var currentPlayer: Mpris.players.values.length > 0 ? Mpris.players.values[0] : null
+    property var currentPlayer: {
+        const players = Mpris.players.values;
+        
+        // Szukamy Tidala
+        let p = players.find(player => player.identity === 'tidal-hifi');
+        
+        // Jeśli nie ma Tidala, szukamy Spotify (opcjonalnie)
+        if (!p) {
+            p = players.find(player => player.identity === 'Spotify');
+        }
+        
+        return p || null;
+    }
 
     // 2. Logika szerokości zależy od tego, czy mamy playera.
     width: (currentPlayer && player.implicitWidth > 0) ? player.implicitWidth + 12 : 0
@@ -32,14 +45,14 @@ Rectangle{
         // Mpris.players.values[0].isPaused ? "  " + Mpris.players.values[0].trackTitle  : ""
 
         text: {
-            if (Mpris.players.values[0].isPlaying){
-                return "  " + Mpris.players.values[0].trackTitle;
+            if (root.currentPlayer.isPlaying){
+                return "  " + root.currentPlayer.trackTitle;
             }
-            else if (Mpris.players.values[0].trackTitle.length == 0){
+            else if (root.currentPlayer.trackTitle.length == 0){
                 return ""
             }
-            else if (!(Mpris.players.values[0].isPaused == false && root.currentPlayer)){
-                return "  " + Mpris.players.values[0].trackTitle;
+            else if (!(root.currentPlayer.isPlaying == true && root.currentPlayer)){
+                return "  " + root.currentPlayer.trackTitle;
             }
             else {
                 return ""
@@ -47,4 +60,9 @@ Rectangle{
         }
 
     }
+
+
+    //sekcja szuflady
+
+
 }
